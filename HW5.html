@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<!-- Demonstrates drag and drop -->
+<html>
+<head>    
+<link rel="stylesheet" href="dynamic_input.css">
+<script>
+		var maxCheckboxes = 16;
+		var maxRadioButtons = 16;
+		var checkboxArray1 = new Array();  // array to keep track of all the checkboxes
+        var checkboxArray2 = new Array(); 
+        var checkboxArray3 = new Array(); 
+        var checkboxArray4 = new Array(); 
+		var radioButtonArray = new Array();  // array to keep track of all the radio buttons
+		var audioArray = new Array();
+        var temposliderval = 500;
+        var num = 0;
+        var online = false; 
+
+		function addInputControl(type, targetId, name) {
+			var element = document.createElement("input");  //Create an input type dynamically.
+			element.type = type;
+            element.name = name;
+			var el = document.getElementById(targetId);
+			el.appendChild(element);
+			return element;         // returns the newly created element
+		}
+
+		function populateControl(){
+            deleteControl();
+            
+            var controlElement = document.createElement("div");
+            controlElement.innerHTML = '';
+            controlElement.id = 'subcontrol';
+            document.getElementById("control1").appendChild( controlElement );
+            
+            var subElement = document.getElementById("subcontrol");
+        
+            subElement.innerHTML = 'Channel1';
+            
+            var dropdownvar = (document.getElementById("mySelect").selectedIndex+1);
+            
+            for(var j=0; j<maxCheckboxes; j++){            // add checkboxes
+                checkboxArray1[j] = addInputControl("checkbox", "subcontrol","checkbox");
+            }
+            
+            var dragbox1 = document.createElement("div");
+            dragbox1.setAttribute("style", 'display:inline-block; width:50px; height:50px; background-color: lightblue; border:1px solid black;');
+            dragbox1.setAttribute("ondrop", 'drop(event)');
+            dragbox1.setAttribute("ondragover", 'allowDrop(event)');
+            dragbox1.id = "box1";
+            subElement.appendChild( dragbox1 );
+            
+            var br = document.createElement('br');
+            subElement.appendChild( br );
+            
+            if (dropdownvar >= 2){
+                for(var j=0; j<maxCheckboxes; j++){            // add checkboxes
+                checkboxArray2[j] = addInputControl("checkbox", "subcontrol","checkbox");
+                }
+            var dragbox2 = document.createElement("div");
+            dragbox2.setAttribute("style", 'display:inline-block; width:50px; height:50px; background-color: lightblue; border:1px solid black;');
+            dragbox2.setAttribute("ondrop", 'drop(event)');
+            dragbox2.setAttribute("ondragover", 'allowDrop(event)');
+            dragbox2.id = "box2";
+            subElement.appendChild( dragbox2 );
+            var br = document.createElement('br');
+            subElement.appendChild( br );
+            }
+            if (dropdownvar >= 3){
+                for(var j=0; j<maxCheckboxes; j++){            // add checkboxes
+                checkboxArray3[j] = addInputControl("checkbox", "subcontrol","checkbox");
+                }
+            var dragbox3 = document.createElement("div");
+            dragbox3.setAttribute("style", 'display:inline-block; width:50px; height:50px; background-color: lightblue; border:1px solid black;');
+            dragbox3.setAttribute("ondrop", 'drop(event)');
+            dragbox3.setAttribute("ondragover", 'allowDrop(event)');
+            dragbox3.id = "box3";
+            subElement.appendChild( dragbox3 );
+            var br = document.createElement('br');
+            subElement.appendChild( br );
+            }
+            if(dropdownvar >= 4){
+            
+                for(var j=0; j<maxCheckboxes; j++){            // add checkboxes
+                checkboxArray4[j] = addInputControl("checkbox", "subcontrol","checkbox");
+                }
+            var dragbox4 = document.createElement("div");
+            dragbox4.setAttribute("style", 'display:inline-block; width:50px; height:50px; background-color: lightblue; border:1px solid black;');
+            dragbox4.setAttribute("ondrop", 'drop(event)');
+            dragbox4.setAttribute("ondragover", 'allowDrop(event)');
+            dragbox4.id = "box4";
+            subElement.appendChild( dragbox4 );
+            var br = document.createElement('br');
+            subElement.appendChild( br );
+            }
+            
+            var hr = document.createElement('hr');
+            subElement.appendChild( hr );
+            
+			for(var j=0; j<maxRadioButtons; j++) {           // add radio buttons
+            radioButtonArray[j] = addInputControl("radio", "subcontrol", "radioButton");
+            }
+            
+			prepareAudio();
+        }
+
+		function toggleButtons(){
+            if (online){
+                if (num == 16){
+                    num = 0;
+                }
+
+                if (num == 0){
+                    radioButtonArray[num].checked = !radioButtonArray[num].checked;
+                    
+                    /*
+                    if(radioButtonArray[15].checked){ 
+                    radioButtonArray[15].checked = !radioButtonArray[15].checked;
+                    }
+                    */
+                }
+                
+                else{
+                    radioButtonArray[num-1].checked = !radioButtonArray[num-1].checked;
+                    radioButtonArray[num].checked = !radioButtonArray[num].checked;
+                }
+
+                for(var j=0; j<maxRadioButtons; j++){
+                    if( radioButtonArray[j].checked ){
+                        if( checkboxArray1[j].checked ){
+                            box = document.getElementById("box1");
+                            image = box.firstChild;
+                            if (image != null){
+                                instrument_name = image.id;
+                                if (instrument_name == "snare")
+                                   idx = 0;
+                                else if (instrument_name == "hihat")
+                                   idx = 1;
+                                else if (instrument_name == "cowbell")
+                                   idx = 2;
+                                else if (instrument_name == "kick")
+                                   idx = 3;
+                                else if (instrument_name == "woodblock")
+                                   idx = 4;
+                                playAudio(idx);
+                            }
+                        }
+                        if(checkboxArray2.length != 0){
+                            if( checkboxArray2[j].checked ){
+                                box = document.getElementById("box2");
+                                image = box.firstChild;
+                                if (image != null){
+                                    instrument_name = image.id;
+                                    if (instrument_name == "snare")
+                                       idx = 0;
+                                    else if (instrument_name == "hihat")
+                                       idx = 1;
+                                    else if (instrument_name == "cowbell")
+                                       idx = 2;
+                                    else if (instrument_name == "kick")
+                                       idx = 3;
+                                    else if (instrument_name == "woodblock")
+                                       idx = 4;
+                                    playAudio(idx);
+                                }
+                            }
+                        }
+                        if(checkboxArray3.length != 0){
+                           if( checkboxArray3[j].checked ){
+                                box = document.getElementById("box3");
+                                image = box.firstChild;
+                                if (image != null){
+                                    instrument_name = image.id;
+                                    if (instrument_name == "snare")
+                                       idx = 0;
+                                    else if (instrument_name == "hihat")
+                                       idx = 1;
+                                    else if (instrument_name == "cowbell")
+                                       idx = 2;
+                                    else if (instrument_name == "kick")
+                                       idx = 3;
+                                    else if (instrument_name == "woodblock")
+                                       idx = 4;
+                                    playAudio(idx);
+                                }
+                            }
+                        }
+                        if(checkboxArray4.length != 0){
+                            if( checkboxArray4[j].checked ){
+                                box = document.getElementById("box4");
+                                image = box.firstChild;
+                                if (image != null){
+                                    instrument_name = image.id;
+                                    if (instrument_name == "snare")
+                                       idx = 0;
+                                    else if (instrument_name == "hihat")
+                                       idx = 1;
+                                    else if (instrument_name == "cowbell")
+                                       idx = 2;
+                                    else if (instrument_name == "kick")
+                                       idx = 3;
+                                    else if (instrument_name == "woodblock")
+                                       idx = 4;
+                                    playAudio(idx);
+                                }
+                            }
+                        }
+                }
+                }
+            num = num+1;
+            setTimeout("toggleButtons()",temposliderval);
+            }
+        }
+
+		function prepareAudio(){
+			audioArray[0] = document.createElement("audio");  //  add audio
+			audioArray[0].src = 'media/snare.wav';
+			audioArray[1] = document.createElement("audio");  //  add audio
+			audioArray[1].src = 'media/hihat.wav';
+            audioArray[2] = document.createElement("audio");  //  add audio
+			audioArray[2].src = 'media/cowbell.wav';
+            audioArray[3] = document.createElement("audio");  //  add audio
+			audioArray[3].src = 'media/kick.wav';
+            audioArray[4] = document.createElement("audio");  //  add audio
+			audioArray[4].src = 'media/woodblock.wav';
+		}
+
+		function playAudio(index){
+			audioArray[index].currentTime = 0;
+			audioArray[index].play();
+			audioArray[index].volume = 0.5;
+		}
+    
+         function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function dragStart(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+
+        function deleteControl() {
+            if( document.getElementById("subcontrol") != null )
+                document.getElementById("control1").removeChild(document.getElementById("subcontrol"));
+            checkboxArray1 = new Array();  // array to keep track of all the checkboxes
+            checkboxArray2 = new Array(); 
+            checkboxArray3 = new Array(); 
+            checkboxArray4 = new Array();
+            radioButtonArray = new Array();
+            online = false;
+        }
+        
+        function play() {
+            online = true;
+            toggleButtons();
+        }
+    
+        function stop() {
+            online = false;
+            toggleButtons();
+        }
+        function setValue(newValue){
+            tempo = 250/(newValue*2);
+            if (tempo > 1600)
+                tempo = 1600;
+            temposliderval = tempo;
+        }
+        
+        function CreateSourceBox(){
+            sourcebox = document.getElementById("sourceBox")
+            var image1 = document.createElement("img");
+            image1.setAttribute("height","150");
+            image1.setAttribute('width','150');
+            image1.setAttribute("id","kick");
+            image1.setAttribute("src","media/kick.jpg");
+            image1.setAttribute("draggable", 'true');
+            image1.setAttribute("ondragstart", "dragStart(event)");
+            image1.id = "kick";
+            sourcebox.appendChild( image1 );
+            var image2 = document.createElement("img");
+            image2.setAttribute("style", 'height:150; width:150;');
+            image2.setAttribute("id","kick");
+            image2.setAttribute("src","media/kick.jpg");
+            image2.setAttribute("draggable", 'true');
+            image2.setAttribute("ondragstart", "dragStart(event)");
+            image2.id = "o";
+            sourcebox.appendChild( image2 );
+            var image3 = document.createElement("img");
+            image3.setAttribute("style", 'height:150; width:150;');
+            image3.setAttribute("id","kick");
+            image3.setAttribute("src","media/kick.jpg");
+            image3.setAttribute("draggable", 'true');
+            image3.setAttribute("ondragstart", "dragStart(event)");
+            image3.id = "o";
+            sourcebox.appendChild( image3 );
+            var image4= document.createElement("img");
+            image4.setAttribute("style", 'height:150; width:150;');
+            image4.setAttribute("id","kick");
+            image4.setAttribute("src","media/kick.jpg");
+            image4.setAttribute("draggable", 'true');
+            image4.setAttribute("ondragstart", "dragStart(event)");
+            image4.id = "o";
+            sourcebox.appendChild( image4 );
+            var image5= document.createElement("img");
+            image5.setAttribute("style", 'height:150; width:150;');
+            image5.setAttribute("id","kick");
+            image5.setAttribute("src","media/kick.jpg");
+            image5.setAttribute("draggable", 'true');
+            image5.setAttribute("ondragstart", "dragStart(event)");
+            image5.id = "o";
+            sourcebox.appendChild( image5 );
+        }
+    </script>
+</head>
+<body onload="populateControl()">
+
+<h1>The Rhythm App</h1>
+
+    <figure>
+    <div id="control1"> </div>
+    <button type="button" onClick="play()">play</button>
+    <button type="button" onClick="stop()">stop</button>
+    <button type="button" onClick="CreateSourceBox()">SourceBox</button>
+    
+    
+    Channels
+    <select id="mySelect" onchange="populateControl()">
+        <option selected>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+    </select>
+        Tempo
+        <input type="range" id="slider" min="0.01" max="1" value="0.5" step=".01" oninput='setValue(this.value)'>
+    </figure>
+    
+    
+    
+    <section id="sourceBox">
+        <img id="kick" src="media/kick.jpg" draggable="true" ondragstart="dragStart(event)" id="o" height='150' width='150'>
+        <img id="snare" src="media/snare.jpg" draggable="true" ondragstart="dragStart(event)" id="o"  height='150' width='150'>
+        <img id="woodblock" src="media/woodblock.jpg" draggable="true" ondragstart="dragStart(event)" id="o"  height='150' width='150'>
+        <img id="hihat" src="media/hihat.jpg" draggable="true" ondragstart="dragStart(event)" id="o"  height='150' width='150'>
+        <img id="cowbell" src="media/cowbell.jpg" draggable="true" ondragstart="dragStart(event)" id="o"  height='150' width='150'>
+    </section>
+    
+    <div id="output"></div>
+    
+</body>
+</html>
+
